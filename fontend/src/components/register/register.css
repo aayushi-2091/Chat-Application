@@ -1,0 +1,167 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+  color: #2a2c42;
+  height: 80vh;
+  width: 60vw;
+  background-color: white;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  padding: 10px;
+
+  @media (max-width: 520px) {
+    gap: 15px;
+
+  }
+
+  h2 {
+    text-align: center;
+    font-size: 30px;
+    padding: 5px;
+
+    @media (max-width: 520px) {
+      font-size: 23px;
+    }
+  }
+
+  .subHead {
+    text-align: center;
+    font-size: 20px;
+    padding: 5px;
+
+    @media (max-width: 520px) {
+      font-size: 15px;
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+
+    @media (max-width: 520px) {
+      width: 100%;
+    }
+
+    label {
+      font-size: 13px;
+      margin-top: 20px;
+
+      @media (max-width: 520px) {
+        font-size: 12px;
+        margin-top: 10px;
+      }
+    }
+
+    input {
+      height: 35px;
+      background-color: transparent;
+      width: 100%;
+      border: none;
+      outline: 2px solid rgba(128, 128, 128, 0.288);
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 6px;
+      font-size: 14px;
+
+      @media (max-width: 520px) {
+        font-size: 13px;
+        margin-top: 4px;
+      }
+
+      &:focus {
+        outline: 2px solid #e2223d;
+      }
+    }
+
+    p {
+      margin-top: 20px;
+      text-align: start;
+      color: #e2223d;
+      font-size: 14px;
+      text-decoration: underline;
+      cursor: pointer;
+
+      @media (max-width: 520px) {
+        font-size: 13px;
+        margin-top: 10px;
+      }
+    }
+
+    button {
+      height: 37px;
+      width: 100%;
+      padding: 2px 10px;
+      background-color: #e2223d;
+      cursor: pointer;
+      outline: none;
+      border: none;
+      color: white;
+      font-size: 14px;
+      border-radius: 6px;
+      margin-top: 20px;
+
+      @media (max-width: 520px) {
+        font-size: 13px;
+        margin-top: 15px;
+      }
+
+      &:active {
+        background-color: #e2223bd5;
+      }
+    }
+  }
+
+  .gsign {
+    height: 35px;
+    width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    outline: 2px solid rgba(128, 128, 128, 0.288);
+    border-radius: 6px;
+    padding: 2px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+
+    @media (max-width: 520px) {
+      width: 100%;
+    }
+
+    p {
+      @media (max-width: 520px) {
+        font-size: 13px;
+      }
+    }
+
+    &:active {
+      background-color: rgba(128, 128, 128, 0.288);
+    }
+  }
+
+  p {
+    text-align: center;
+
+    @media (max-width: 520px) {
+      font-size: 13px;
+    }
+    span {
+      margin-left: 4px;
+      color: #e2223d;
+      cursor: pointer;
+      text-decoration: underline;
+
+      &:active {
+        color: #2a2c42;
+      }
+    }
+  }
+}
