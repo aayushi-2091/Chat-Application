@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\ChatSetting;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendOtpMail;
 
 class User extends Authenticatable
 {
@@ -22,6 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'otp',
     ];
 
     /**
@@ -65,4 +68,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(ChatSetting::class, 'receiver_id');
     }
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+    
 }

@@ -15,8 +15,12 @@ class MessageController extends Controller
     // Get list of users for the authenticated user to chat with
     public function users()
     {
-        $users = User::where('id', '!=', Auth::id())->get();
-        return response()->json($users);
+        
+    $users = User::where('id', '!=', Auth::id())
+    ->with('profile')  // Include the profile relation
+    ->get();
+
+    return response()->json($users);
     }
 
     // Get messages between authenticated user and selected user

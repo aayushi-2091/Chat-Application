@@ -11,6 +11,7 @@ use App\Models\Message;
 use App\Http\Controllers\PusherAuthController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ChatSettingController;
+use App\Http\Controllers\ProfileController;
 
 
 Route::get('/user', function (Request $request) {
@@ -18,6 +19,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('register', [RegisterController::class, 'register']);
+Route::post('/verify-otp', [RegisterController::class, 'verifyOtp']);
 Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LogoutController::class, 'logout'])->middleware('auth:sanctum');
 
@@ -49,5 +51,10 @@ Route::middleware('auth:sanctum')->post('/pusher/auth', [PusherAuthController::c
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('chat-settings/{receiverId}/background-color', [ChatSettingController::class, 'getBackgroundColor']);
     Route::post('chat-settings/{receiverId}/background-color', [ChatSettingController::class, 'updateBackgroundColor']);
+});
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::post('/profile', [ProfileController::class, 'update']);
+    Route::get('/user-profile/{id}', [ProfileController::class, 'getUserProfile']);
 });
 

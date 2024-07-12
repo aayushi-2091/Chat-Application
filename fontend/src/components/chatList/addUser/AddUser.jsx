@@ -7,6 +7,7 @@ const AddUser = ({ search, handleAddToChats }) => {
   const { chats, addToChats } = useChatStore();
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedUserProfilePhoto, setSelectedUserProfilePhoto] = useState("");
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -37,9 +38,20 @@ const AddUser = ({ search, handleAddToChats }) => {
     fetchUsers();
   }, []);
 
+  const getProfilePhotoUrl = (user) => {
+    if (user.profile.profile_photo === null) {
+      const initial = user.name.charAt(0);
+      return `https://ui-avatars.com/api/?name=${initial}&background=random`;
+    } else {
+      return `http://127.0.0.1:8000/storage/${user.profile.profile_photo}`;
+    }
+  };
+
   const handleAdd = (user) => {
     addToChats(user);
     handleAddToChats(user);
+    setSelectedUserProfilePhoto(getProfilePhotoUrl(user));
+    console.log(getProfilePhotoUrl(user));
   };
 
   const filtered = users.filter(
@@ -53,7 +65,7 @@ const AddUser = ({ search, handleAddToChats }) => {
       {filtered.map((user) => (
         <div className="userItem" key={user.id}>
           <div className="user">
-            <img src={user.img} alt="" />
+            <img src={getProfilePhotoUrl(user)} alt="" />
             <span>{user.name}</span>
           </div>
           <button onClick={() => handleAdd(user)}>

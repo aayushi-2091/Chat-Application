@@ -1,4 +1,3 @@
-// Login.jsx
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +13,7 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError(null); // Reset the error state before attempting to log in
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/login', {
         email,
@@ -21,7 +21,16 @@ function Login() {
       });
       login(response.data, navigate);
     } catch (error) {
-      setError(error.response?.data);
+      if (error.response && error.response.status === 422) {
+        // Validation error
+        setError("Both fields are required.");
+      } else if (error.response && error.response.status === 401) {
+        // Invalid login details
+        setError(error.response.data.message);
+      } else {
+        // Other errors
+        setError("An unexpected error occurred. Please try again later.");
+      }
     }
   };
 
@@ -37,10 +46,7 @@ function Login() {
         <button type="submit">Sign In</button>
       </form>
       {error && <p className='error'>{error}</p>}
-      <div className='gsign'>
-        <img src="./google.svg" alt="Google Sign In" />
-        <p>Sign In with Google</p>
-      </div>
+      
       <p>Don't have an account? <span onClick={toggleRegister}>Sign Up</span></p>
     </div>
   );

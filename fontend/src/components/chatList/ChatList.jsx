@@ -88,6 +88,7 @@ const ChatList = () => {
               onClick={() => handleSelect(user)}
             >
               <div className="user">
+                <img src={user.profilePhotoUrl} alt="" />
                 <span>{user.name}</span>
               </div>
             </div>

@@ -29,6 +29,12 @@
       font-size: 23px;
     }
   }
+  .error {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+  
 
   .subHead {
     text-align: center;

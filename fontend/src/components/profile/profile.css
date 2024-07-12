@@ -1,0 +1,32 @@
+.profile-photo {
+    position: relative;
+    display: inline-block;
+    padding-left: 12vh;
+    width: 150px; /* Adjust width as needed */
+    height: 150px; /* Adjust height as needed */
+  }
+  
+  .profile-photo img {
+    border-radius: 50%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the entire container */
+    width: 10vw;
+  }
+  
+  .profile-photo .camera-icon {
+    position: absolute;
+    bottom: 0px;
+    right: -68px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    padding: 3px;
+    cursor: pointer;
+    width: 22%;
+}
+  
+  
+  .profile-photo .camera-icon i {
+    color: white;
+    font-size: 18px;
+  }
+  

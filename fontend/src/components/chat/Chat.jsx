@@ -1,3 +1,4 @@
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./chat.css";
 import { TbPhoneCall } from "react-icons/tb";
 import { MdVideoCall } from "react-icons/md";
@@ -29,6 +30,7 @@ const Chat = () => {
   const [mediaUrl, setMediaUrl] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
   const [background, setBackground] = useState("#ffffff"); // Default background color
+  const [selectedUserProfilePhoto, setSelectedUserProfilePhoto] = useState("");
 
   const baseURL = "http://localhost:8000"; // Adjust this based on your backend URL
 
@@ -69,6 +71,31 @@ const Chat = () => {
 
       fetchMessages();
       const intervalId = setInterval(fetchMessages, 1000); // Poll every 1 second
+      const fetchSelectedUserProfile = () => {
+        axios
+          .get(`http://127.0.0.1:8000/api/user-profile/${selectedUser.id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((response) => {
+            const { profile,profilePhotoUrl, user } = response.data;
+            const name = user.name;
+            const initial = name ? name.charAt(0).toUpperCase() : '';
+            
+            if (profile.profile_photo==null) {
+              setSelectedUserProfilePhoto(`https://ui-avatars.com/api/?name=${initial}&background=random`);
+                
+            } else {
+              setSelectedUserProfilePhoto(`${profilePhotoUrl}`);
+            }
+        })
+          .catch((error) => {
+            console.error("Error fetching selected user's profile photo:", error);
+          });
+      };
+      fetchSelectedUserProfile();
+
 
       const fetchBackgroundColor = () => {
         axios
@@ -87,7 +114,7 @@ const Chat = () => {
 
       fetchBackgroundColor();
 
-      Pusher.logToConsole = true;
+      // Pusher.logToConsole = true;
 
       const pusher = new Pusher("daf186e3430736b05d17", {
         cluster: "mt1",
@@ -158,9 +185,12 @@ const Chat = () => {
   const handleLogout = () => {
     navigate("/logout");
   };
-
-  const toggleDropdown = () => {
-    setShowDropdown(!showDropdown);
+  const handleProfile = () => {
+    navigate("/profile");
+  };
+  const toggleDropdown = (event) => {
+    event.stopPropagation();
+    setShowDropdown((prevState) => !prevState);
   };
 
   const handleFileUpload = (e) => {
@@ -236,6 +266,10 @@ const Chat = () => {
           />
           {selectedUser && (
             <>
+            <img
+                src={selectedUserProfilePhoto}
+                className="profilephoto"
+              />
               <div className="desc">
                 <span>{selectedUser.name}</span>
               </div>
@@ -245,18 +279,20 @@ const Chat = () => {
         <div className="options">
           <TbPhoneCall className="option-icon" />
           <MdVideoCall className="option-icon" />
-          <IoMdMore className="option-icon" onClick={toggleDropdown} />
-          {showDropdown && (
-            <div className="dropdown-menu">
-              <div className="dropdown-item" onClick={openColorPicker}>
-                Change Background
+          <div className="dropdown">
+            <IoMdMore className="option-icon dropdown-toggle" onClick={toggleDropdown} />
+            {showDropdown && (
+              <div className="dropdown-menu show">
+                <div className="dropdown-item" onClick={openColorPicker}>
+                  Change Background
+                </div>
+                <div className="dropdown-item" onClick={handleProfile}> Profile</div>
+                <div className="dropdown-item" onClick={handleLogout}>
+                  Logout
+                </div>
               </div>
-              <div className="dropdown-item">Profile</div>
-              <div className="dropdown-item" onClick={handleLogout}>
-                Logout
-              </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
       <div className="showMessage" style={{ backgroundColor: background }}>

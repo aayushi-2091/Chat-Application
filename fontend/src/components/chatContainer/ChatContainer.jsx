@@ -8,24 +8,42 @@ import axios from "axios";
 
 export default function ChatContainer() {
     const [currentUser, setCurrentUser] = useState(null);
+    const [profilePhoto, setProfilePhoto] = useState(null);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        axios
-            .get('http://127.0.0.1:8000/api/user', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-            .then((response) => {
-                setCurrentUser(response.data);
-            })
-            .catch((error) => {
-                console.error("Error fetching current user:", error);
-            });
+        
+        const fetchUserData = async () => {
+            try {
+                const userResponse = await axios.get('http://127.0.0.1:8000/api/user', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                setCurrentUser(userResponse.data);
+
+                const profileResponse = await axios.get('http://127.0.0.1:8000/api/profile', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                const { profile } = profileResponse.data;
+
+                if (profile.profile_photo) {
+                    setProfilePhoto(`http://127.0.0.1:8000/storage/${profile.profile_photo}`);
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchUserData();
     }, []);
 
-    const getAvatarUrl = (name) => {
+    const getAvatarUrl = (name, profilePhoto) => {
+        if (profilePhoto) {
+            return profilePhoto;
+        }
         const initial = name ? name.charAt(0).toUpperCase() : '';
         return `https://ui-avatars.com/api/?name=${initial}&background=random`;
     }
@@ -39,7 +57,7 @@ export default function ChatContainer() {
             <div className="bottom">
                 <div className="userName">
                     {currentUser && (
-                        <img src={getAvatarUrl(currentUser.name)} alt="Avatar" />
+                        <img src={getAvatarUrl(currentUser.name, profilePhoto)} alt="Avatar" />
                     )}
                     {currentUser && <span>{currentUser.name}</span>}
                 </div>
